@@ -1,0 +1,46 @@
+# Mihomo (Clash Meta) 配置模板
+# 使用方法：复制为 config.yaml，将 YOUR_SUBSCRIPTION_URL 替换为你的订阅链接
+#
+#   copy config.yaml.example config.yaml
+
+mixed-port: 7890
+allow-lan: true
+bind-address: "*"
+mode: rule
+log-level: info
+ipv6: false
+external-controller: 0.0.0.0:9090
+
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  nameserver:
+    - 223.5.5.5
+    - 119.29.29.29
+  fallback:
+    - 8.8.8.8
+    - 1.1.1.1
+
+proxy-providers:
+  subscription:
+    type: http
+    url: "YOUR_SUBSCRIPTION_URL"
+    interval: 3600
+    path: ./providers/subscription.yaml
+    health-check:
+      enable: true
+      url: http://www.gstatic.com/generate_204
+      interval: 300
+
+proxy-groups:
+  - name: PROXY
+    type: select
+    proxies:
+      - DIRECT
+    use:
+      - subscription
+
+rules:
+  - MATCH,PROXY

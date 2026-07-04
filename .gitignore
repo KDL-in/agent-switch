@@ -1,0 +1,24 @@
+# 本地环境变量（含订阅链接、端口等，切勿提交）
+.env
+.env.*
+!.env.example
+
+# Clash 运行时配置（含节点密码、订阅拉取结果）
+config/clash/config.yaml
+config/clash/providers/
+config/clash/cache.db
+config/clash/geoip.metadb
+config/clash/*.db
+config/clash/*.metadb
+
+# CC Switch 运行时数据（含 API Key、Web 密码、auth key）
+data/
+
+# Node / 测试依赖
+node_modules/
+package-lock.json
+
+# 通用密钥文件
+*.pem
+secrets/
+
