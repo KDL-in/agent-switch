@@ -14,6 +14,7 @@ param(
 
 $ErrorActionPreference = "Stop"
 . "$PSScriptRoot\lib\common.ps1"
+. "$PSScriptRoot\lib\agents.ps1"
 Initialize-Project -ScriptRoot $PSScriptRoot
 
 $InternalWebPassword = "ccswitch"
@@ -89,6 +90,12 @@ try {
 
     Write-StepLocal "Starting CC Switch proxy..."
     Invoke-ProjectScript -Name "start-proxy.ps1"
+
+    Write-StepLocal "Checking agent proxy config..."
+    $agentsUpdated = Ensure-AgentsConfig -Agents @("claude", "codex", "gemini", "opencode") -Silent:$Silent
+    if ($agentsUpdated -and -not $Silent) {
+        Write-Ok "Added missing agent proxy fields (existing config preserved)"
+    }
 
     if (-not $Silent) {
         Write-Host "`nAll services started." -ForegroundColor Green
